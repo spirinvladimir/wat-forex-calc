@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+  <label for="_amount">Amount:</label>
+  <input type="number" id="_amount" value="23.003">
+  <label for="_price">Price:</label>
+  <input type="number" id="_price" value="12.11">
+  <label for="_commission">Commission:</label>
+  <input type="number" id="_commission" value="0.02">
+  <button id="_buy">BUY</button>
+  <button id="_sell">SELL</button>
+  <label for="_res">Result:</label>
+  <input type="number" id="_res" disabled>
+  <script>
+  fetch('main.wasm')
+    .then(_ => _.arrayBuffer())
+    .then(_ => WebAssembly.instantiate(_))
+    .then(_ => {
+      const {buy, sell} = _.instance.exports
+      _buy.onclick = () =>
+          _res.value = buy(
+              Number(_amount.value),
+              Number(_price.value),
+              Number(_commission.value)
+          )
+      _sell.onclick = () =>
+          _res.value = sell(
+              Number(_amount.value),
+              Number(_price.value),
+              Number(_commission.value)
+          )
+    })
+    .catch(console.error)
+  </script>
+</body>
+</html>

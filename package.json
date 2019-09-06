@@ -1,0 +1,12 @@
+{
+  "name": "wat-forex-calc",
+  "description": "Buy/Sell with commission",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npx wat2wasm main.wat",
+    "start": "serve"
+  },
+  "dependencies": {
+    "serve": "11.1.0"
+  }
+}
