@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+    thead,
+    tfoot {
+        background-color: #3f87a6;
+        color: #fff;
+    }
+
+    tbody {
+        background-color: #e4f0f5;
+    }
+
+    caption {
+        padding: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+        border: 2px solid rgb(200, 200, 200);
+        letter-spacing: 1px;
+        font-family: sans-serif;
+        font-size: .8rem;
+    }
+
+    td,
+    th {
+        border: 1px solid rgb(190, 190, 190);
+        padding: 5px 10px;
+    }
+
+    td {
+        text-align: center;
+    }
+    body {
+        display: flex;
+        justify-content: center;
+    }
+    </style>
+</head>
+<body>
+    <table>
+        <caption>Orderbook buy BTC for USD (<label for="js">use JavaScript</label><input id="js" type="checkbox">)</caption>
+        <thead>
+            <tr>
+                <th>Price BTC/USD</th>
+                <th>Amount in USD</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="number" value="10300"></td>
+                <td><input type="number" value="10"></td>
+            </tr>
+            <tr>
+                <td><input type="number" value="10301"></td>
+                <td><input type="number" value="1"></td>
+            </tr>
+            <tr>
+                <td><input type="number" value="10302"></td>
+                <td><input type="number" value="2"></td>
+            </tr>
+            <tr>
+                <td><input type="number" value="10383.2"></td>
+                <td><input type="number" value="5"></td>
+            </tr>
+            <tr>
+                <td><input type="number" value="11000"></td>
+                <td><input type="number" value="100"></td>
+            </tr>
+            <tr>
+                <td><input type="number" value="12000"></td>
+                <td><input type="number" value="1000"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><input id="input_price" type="number" disabled></td>
+                <td><input id="input_amount" type="number" placeholder="enter amount"></td>
+            </tr>
+        </tfoot>
+    </table>
+    <script>
+    function price_by_amount_js (orderbook, amount, count) {
+        var sum = 0
+        var i = 0
+        var order
+        var price = null
+        do {
+            order = {
+                price: orderbook[i * 2],
+                amount: orderbook[i * 2 + 1]
+            }
+            price = order.price
+            sum += order.amount
+            i++
+        } while (i < count && sum < amount)
+
+        return sum < amount
+            ? null
+            : price
+    }
+    </script>
+    <script>
+function debounce (func) {
+    let debounceTimer
+    return function() {
+        const context = this
+        const args = arguments
+        clearTimeout(debounceTimer)
+        debounceTimer = setTimeout(() => func.apply(context, args), 500)
+    }
+}
+
+const tbody = document.getElementsByTagName('tbody')[0]
+const memory = new WebAssembly.Memory({initial: 1, maximum: 10})
+
+fetch('main.wasm')
+    .then(_ => _.arrayBuffer())
+    .then(_ => WebAssembly.instantiate(_, {js: {mem: memory}}))
+    .then(_ => {
+        const {price_by_amount} = _.instance.exports
+        const orderbook = new Float64Array(memory.buffer)
+
+        const load_orderbook = debounce(() => {
+            for (var i = 0; i < tbody.children.length; i += 1) {
+                orderbook[i * 2]     = Number(tbody.children[i].firstElementChild.firstElementChild.value)
+                orderbook[i * 2 + 1] = Number(tbody.children[i].lastElementChild.firstElementChild.value)
+            }
+        })
+
+        Array.prototype.forEach.call(
+            document.getElementsByTagName('input'),
+            input => {
+                if (input.id === 'input_amount') return
+                input.onkeyup = load_orderbook
+                input.onchange = load_orderbook
+            }
+        )
+
+        load_orderbook()
+
+        const find_best_price_for_amount = debounce(() =>
+            input_price.value = js.checked
+                ? price_by_amount_js(orderbook, Number(input_amount.value), tbody.children.length)
+                : price_by_amount(Number(input_amount.value), tbody.children.length)
+        )
+
+        input_amount.onkeyup = find_best_price_for_amount
+        input_amount.onchange = find_best_price_for_amount
+    })
+    .catch(console.error)
+  </script>
+</body>
+</html>

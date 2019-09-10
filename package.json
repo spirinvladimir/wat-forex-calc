@@ -2,11 +2,13 @@
   "name": "wat-forex-calc",
   "description": "Buy/Sell with commission",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spirinvladimir/wat-forex-calc.git"
+  },
   "scripts": {
     "build": "npx wat2wasm main.wat",
-    "start": "serve"
+    "start": "npx serve"
   },
-  "dependencies": {
-    "serve": "11.1.0"
-  }
+  "license": "ISC"
 }
