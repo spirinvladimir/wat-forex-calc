@@ -1,5 +1,11 @@
 (module
     (memory (import "js" "mem") 1)
+    (func $roi (param $investment) (param $return) (result f64)
+        (f64.div
+            (f64.sub
+                (get_local $investment)
+                (get_local $return))
+            (get_local $investment)))
     (func $price_by_amount (param $amount f64) (param $count i32) (result f64)
         (local $i i32)
         (local $price f64)
@@ -73,4 +79,5 @@
     (export "buy" (func $buy))
     (export "sell" (func $sell))
     (export "price_by_amount" (func $price_by_amount))
+    (export "roi" (func $roi))
 )
