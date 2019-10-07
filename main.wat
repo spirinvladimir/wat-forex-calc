@@ -1,6 +1,6 @@
 (module
     (memory (import "js" "mem") 1)
-    (func $roi (param $investment) (param $return) (result f64)
+    (func $roi (param $investment f64) (param $return f64) (result f64)
         (f64.div
             (f64.sub
                 (get_local $investment)
