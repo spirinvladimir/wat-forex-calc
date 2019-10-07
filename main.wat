@@ -3,8 +3,8 @@
     (func $roi (param $investment f64) (param $return f64) (result f64)
         (f64.div
             (f64.sub
-                (get_local $investment)
-                (get_local $return))
+                (get_local $return)
+                (get_local $investment))
             (get_local $investment)))
     (func $price_by_amount (param $amount f64) (param $count i32) (result f64)
         (local $i i32)
