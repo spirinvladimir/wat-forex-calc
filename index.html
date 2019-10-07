@@ -17,9 +17,9 @@
   <script>
   fetch('main.wasm')
     .then(_ => _.arrayBuffer())
-    .then(_ => WebAssembly.instantiate(_))
+    .then(_ => WebAssembly.instantiate(_, {js: {mem: new WebAssembly.Memory({initial: 1, maximum: 10})}}))
     .then(_ => {
-      const {buy, sell, byid} = _.instance.exports
+      const {buy, sell} = _.instance.exports
       _buy.onclick = () =>
           _res.value = buy(
               Number(_amount.value),
