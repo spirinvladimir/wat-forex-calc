@@ -1,7 +1,9 @@
 [package]
 name = "spirinvladimir/wat-forex-calc"
-version = "0.1.0"
+version = "1.0.0"
 description = "Set usefull functions for trading"
+repository = "https://github.com/spirinvladimir/wat-forex-calc"
+homepage = "http://spirintravels.com/wat-forex-calc/price-for-amount"
 
 [[module]]
 name = "wat-forex-calc"
