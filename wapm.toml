@@ -1,0 +1,8 @@
+[package]
+name = "wat-forex-calc"
+version = "0.1.0"
+description = ""
+
+[[module]]
+name = "wat-forex-calc"
+source = "main.wasm"
