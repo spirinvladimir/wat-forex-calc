@@ -1,5 +1,5 @@
 [package]
-name = "wat-forex-calc"
+name = "spirinvladimir/wat-forex-calc"
 version = "0.1.0"
 description = "Set usefull functions for trading"
 
