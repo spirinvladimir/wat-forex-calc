@@ -10,3 +10,7 @@ license = "ISC"
 [[module]]
 name = "wat-forex-calc"
 source = "main.wasm"
+
+[[command]]
+name = "wat-forex-calc"
+module = "wat-forex-calc"
