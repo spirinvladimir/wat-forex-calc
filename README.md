@@ -1,5 +1,3 @@
-![Publish Status](https://img.shields.io/badge/wapm-spirinvladimir%2Fwat--forex--calc-green)
-
 # ForEx calculations in WebAssembly
 
 ### Why WebAssembly?
