@@ -45,24 +45,24 @@ fetch('main.wasm')
             }
         })
 
-        Array.prototype.forEach.call(
-            document.getElementsByTagName('input'),
-            input => {
-                if (input.id === 'input_amount') return
-                input.onkeyup = load_orderbook
-                input.onchange = load_orderbook
-            }
-        )
-
-        load_orderbook()
-
         const find_best_price_for_amount = debounce(() =>
             input_price.value = js.checked
                 ? price_by_amount_js(orderbook, Number(input_amount.value), tbody.children.length)
                 : price_by_amount(Number(input_amount.value), tbody.children.length)
         )
 
-        input_amount.onkeyup = find_best_price_for_amount
-        input_amount.onchange = find_best_price_for_amount
+        Array.prototype.forEach.call(
+            document.getElementsByTagName('input'),
+            input => {
+                if (input.id === 'input_amount') {
+                    input.onkeyup = find_best_price_for_amount
+                    input.onchange = find_best_price_for_amount
+                }
+                input.onkeyup = load_orderbook
+                input.onchange = load_orderbook
+            }
+        )
+
+        load_orderbook()
     })
     .catch(console.error)
